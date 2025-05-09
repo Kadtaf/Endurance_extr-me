@@ -1,0 +1,113 @@
+:root {
+    --orange: #FF5A00;
+    --marron: #3A2E1E;
+    --noir: #000000;
+    --beige: #F5F0E6;
+}
+
+/* Base */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    background: var(--beige);
+    color: var(--noir);
+}
+/* Header - Version corrigée */
+header {
+    background: var(--noir);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    height: 80px; /* Hauteur fixe */
+    box-sizing: border-box;
+}
+
+/* Menu Burger - Version unique et corrigée */
+.menu-toggle {
+    display: none; /* Caché par défaut */
+    width: 40px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    position: relative;
+    z-index: 1001;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.burger-line {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: var(--orange);
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+/* Navigation */
+.main-nav ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.main-nav a {
+    color: var(--beige);
+    text-decoration: none;
+    font-weight: 100;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        padding-top: 80px; /* Compense le header fixe */
+    }
+    
+    .menu-toggle {
+        display: flex; /* Visible seulement en mobile */
+    }
+    
+    .main-nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: var(--noir);
+        transition: right 0.3s ease;
+        padding: 80px 2rem 0;
+    }
+    
+    .main-nav.active {
+        right: 0;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    /* Transformation en croix */
+    .menu-toggle.active .burger-line:nth-child(1) {
+        transform: translateY(10px) rotate(45deg);
+    }
+    .menu-toggle.active .burger-line:nth-child(2) {
+        opacity: 0;
+    }
+    .menu-toggle.active .burger-line:nth-child(3) {
+        transform: translateY(-10px) rotate(-45deg);
+    }
+}

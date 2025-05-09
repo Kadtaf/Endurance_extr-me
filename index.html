@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="VTT de descente PRO-X900 par Endurance Extrême - Performance et durabilité">
+    <title>Endurance Extrême | VTT PRO-X900</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="logo-container">
+            <img src="assets/logo_VTT-1.webp" alt="Logo Endurance Extrême" class="logo-img" style="width: 150px; height: auto;">
+        
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#produit">Produit</a></li>
+                <li><a href="#technologie">Technologie</a></li>
+                <li><a href="#equipe">Équipe</a></li>
+                <li><a href="#engagement">Engagements</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Menu">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+        </button>
+    </header>
+
+    <!-- Section Produit - Version optimisée -->
+<section id="produit" class="product-section">
+    <div class="product-visuals">
+        <!-- Main Product Image -->
+        <figure class="product-main-image">
+            <img src="assets/best-seller.webp" 
+                 alt="VTT PRO-X900 en action" 
+                 loading="lazy"
+                 class="product-img">
+            <figcaption>VTT PRO-X900 - Best-seller</figcaption>
+        </figure>
+
+        <!-- Thumbnail Gallery -->
+        <div class="product-thumbnails">
+            <img src="assets/evasion.jpg" 
+                 alt="Détail du cadre" 
+                 loading="lazy"
+                 class="thumbnail active">
+            <img src="assets/tryning.jpg" 
+                 alt="Suspension avant" 
+                 loading="lazy"
+                 class="thumbnail">
+        </div>
+    </div>
+
+    <div class="product-details">
+        <h2>VTT DE DESCENTE <span class="highlight">PRO-X900</span></h2>
+        <ul class="features-list">
+            <li class="feature-item">
+                <svg class="feature-icon">[...]</svg>
+                <span>Cadre en carbone 100% recyclé</span>
+            </li>
+            <!-- Autres caractéristiques -->
+        </ul>
+        <button class="cta-button">CONFIGURER</button>
+    </div>
+</section>      
+
+    <!-- Section Technologie -->
+    <section id="technologie" class="tech-section">
+        <h2>TECHNOLOGIE <span class="orange-text">INNOVANTE</span></h2>
+        <div class="tech-grid">
+            <div class="tech-card">
+                <h3>SUSPENSION ONDULÉE</h3>
+                <p>Amortissement adaptatif pour les terrains extrêmes</p>
+            </div>
+            <!-- 2 autres cartes similaires -->
+        </div>
+    </section>
+
+    <!-- Section Équipe -->
+    <section id="equipe" class="team-section">
+        <h2>NOTRE <span class="orange-text">ÉQUIPE</span></h2>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-photo" style="background-image: url('assets/team1.jpg');"></div>
+                <h3>Marie L.</h3>
+                <p>Designer Matériaux</p>
+            </div>
+            <!-- 2 autres cartes -->
+        </div>
+    </section>
+
+    <!-- Section Engagements -->
+    <section id="engagement" class="eco-section">
+        <h2>ENGAGEMENTS <span class="orange-text">ÉCOLOGIQUES</span></h2>
+        <div class="eco-grid">
+            <div class="eco-card">
+                <h3>MATÉRIAUX RECYCLÉS</h3>
+                <p>92% de composants recyclés</p>
+            </div>
+            <!-- 2 autres cartes -->
+        </div>
+    </section>
+
+    <!-- Section Contact -->
+    <section id="contact" class="contact-section">
+        <h2>CONTACTEZ-<span class="orange-text">NOUS</span></h2>
+        <form id="newsletterForm" action="php/form.php" method="POST">
+            <input type="text" name="prenom" placeholder="Prénom" required>
+            <input type="text" name="nom" placeholder="Nom" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <button type="submit" class="cta-button">S'INSCRIRE</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2023 ENDURANCE EXTRÊME</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
