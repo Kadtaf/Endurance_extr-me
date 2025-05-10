@@ -1,67 +1,105 @@
+
+/* VARIABLES & BASE */
+
 :root {
     --orange: #FF5A00;
     --marron: #3A2E1E;
     --noir: #000000;
     --beige: #F5F0E6;
+    --blanc: #FFFFFF;
 }
 
-/* Base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+  
 body {
     font-family: 'Roboto', sans-serif;
-    margin: 0;
-    background: var(--beige);
+    background-color: var(--beige);
     color: var(--noir);
+    line-height: 1.6;
+    overflow-x: hidden;
 }
-/* Header - Version corrigée */
+
+  /* STRUCTURE */
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+  /* HEADER */
+
 header {
-    background: var(--noir);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: var(--noir);
+    padding: 1rem;
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 1000;
-    height: 80px; /* Hauteur fixe */
-    box-sizing: border-box;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* Menu Burger - Version unique et corrigée */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-img {
+    height: 50px;
+    width: auto;
+}
+
+.logo-main {
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: var(--orange);
+    margin: 0;
+}
+
+.logo-sub {
+    font-weight: 100;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--blanc);
+    margin: 0;
+}
+
+  /* Menu Burger */
 .menu-toggle {
-    display: none; /* Caché par défaut */
-    width: 40px;
-    height: 30px;
-    background: transparent;
+    background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
-    position: relative;
-    z-index: 1001;
-    flex-direction: column;
-    justify-content: space-between;
+    padding: 0.5rem;
+    display: none;
+    z-index: 101;
 }
 
 .burger-line {
     display: block;
-    width: 100%;
-    height: 3px;
-    background: var(--orange);
+    width: 25px;
+    height: 2px;
+    background-color: var(--blanc);
+    margin: 5px 0;
     transition: all 0.3s ease;
-    transform-origin: center;
 }
 
-/* Navigation */
+  /* Navigation */
 .main-nav ul {
     display: flex;
     gap: 1.5rem;
     list-style: none;
-    padding: 0;
-    margin: 0;
 }
 
 .main-nav a {
-    color: var(--beige);
+    color: var(--blanc);
     text-decoration: none;
     font-weight: 100;
     text-transform: uppercase;
@@ -70,44 +108,310 @@ header {
     transition: color 0.3s;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    body {
-        padding-top: 80px; /* Compense le header fixe */
-    }
+.main-nav a:hover {
+    color: var(--orange);
+}
+
+  /* SECTION PRODUIT */
+
+.hero-product {
+    margin-top: 80px;
+    padding: 2rem 0;
+}
+
+.product-highlight {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+}
+
+.product-gallery {
+    flex: 1;
+    min-width: 300px;
+}
+
+.product-gallery img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
+
+.product-details {
+    flex: 1;
+    min-width: 300px;
+}
+
+.product-details h2 {
+    font-weight: 900;
+    font-size: 2rem;
+    color: var(--noir);
+    margin-bottom: 1rem;
+}
+
+.product-name {
+    color: var(--orange);
+}
+
+.product-badge {
+    display: inline-block;
+    background-color: var(--marron);
+    color: var(--blanc);
+    padding: 0.3rem 1rem;
+    font-weight: 900;
+    border-radius: 4px;
+    position: relative;
     
+    /* Animation */
+    animation: pulse 2s infinite ease-in-out;
+    
+    /* Effet de profondeur */
+    box-shadow: 0 4px 8px rgba(255, 90, 0, 0.3);
+    
+    /* Transition pour le hover */
+    transition: all 0.3s ease;
+}
+
+  /* Animation de pulsation */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); box-shadow: 0 6px 12px rgba(255, 90, 0, 0.4); }
+    100% { transform: scale(1); }
+}
+
+  /* Effet au survol */
+.product-badge:hover {
+    animation: none; /* Désactive l'animation au survol */
+    transform: scale(1.08) rotate(-2deg);
+    background-color: #e65100; /* Orange légèrement plus foncé */
+}
+
+
+
+.features-list {
+    list-style: none;
+    margin: 2rem 0;
+}
+
+.features-list li {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 100;
+}
+
+.features-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--orange);
+    font-weight: 900;
+}
+
+.cta-button {
+    background-color: var(--orange);
+    color: var(--blanc);
+    border: none;
+    padding: 1rem 2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 4px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.cta-button:hover {
+    background-color: var(--marron);
+    color: var(--orange);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cta-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+  /* SECTION TEMOIGNAGES */
+
+.testimonials {
+    background-color: var(--marron);
+    color: var(--blanc);
+    padding: 3rem 0;
+}
+
+.testimonials h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 900;
+}
+
+.testimonial-card {
+    background-color: rgba(0,0,0,0.2);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.rating {
+    color: var(--orange);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+
+  /* SECTION A PROPOS */
+
+.section-about {
+    padding: 3rem 0;
+    background-color: var(--beige);
+    border-top: 2px solid var(--orange);
+    margin-left: 10px;
+}
+
+.section-about h2 {
+    font-weight: 900;
+    margin-bottom: 1rem;
+    color: var(--noir);
+}
+
+  /* SECTION NEWSLETTER */
+
+.newsletter-section {
+    background-color: var(--noir);
+    color: var(--blanc);
+    padding: 3rem 0;
+}
+
+.newsletter-section h2 {
+    color: var(--orange);
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.newsletter-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 100;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid var(--orange);
+    background-color: transparent;
+    color: var(--blanc);
+    font-family: 'Roboto', sans-serif;
+}
+
+.btn-submit {
+    background-color: var(--orange);
+    color: var(--blanc);
+    border: none;
+    padding: 1rem;
+    font-weight: 900;
+    width: 100%;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.btn-submit:hover {
+    opacity: 0.9;
+}
+
+
+  /* FOOTER */
+
+footer {
+    background-color: var(--noir);
+    color: var(--blanc);
+    padding: 2rem;
+    text-align: center;
+    font-weight: 100;
+}
+
+
+  /* MEDIA QUERIES MOBILE */
+
+@media (max-width: 767px) {
     .menu-toggle {
-        display: flex; /* Visible seulement en mobile */
+    display: block;
     }
-    
+
     .main-nav {
         position: fixed;
         top: 0;
         right: -100%;
         width: 70%;
         height: 100vh;
-        background: var(--noir);
+        background-color: var(--noir);
+        padding: 5rem 2rem;
         transition: right 0.3s ease;
-        padding: 80px 2rem 0;
     }
-    
+
     .main-nav.active {
         right: 0;
     }
-    
+
     .main-nav ul {
         flex-direction: column;
         gap: 2rem;
     }
-    
-    /* Transformation en croix */
+
     .menu-toggle.active .burger-line:nth-child(1) {
-        transform: translateY(10px) rotate(45deg);
+        transform: translateY(7px) rotate(45deg);
     }
+
     .menu-toggle.active .burger-line:nth-child(2) {
         opacity: 0;
     }
+
     .menu-toggle.active .burger-line:nth-child(3) {
-        transform: translateY(-10px) rotate(-45deg);
+        transform: translateY(-7px) rotate(-45deg);
     }
+
+    .product-highlight {
+        flex-direction: column;
+    }
+
+    .hero-product {
+        margin-top: 70px;
+    }
+}
+
+
+  /* ANIMATIONS & ETATS */
+
+.main-nav a {
+    position: relative;
+}
+
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--orange);
+    transition: width 0.3s;
+}
+
+.main-nav a:hover::after {
+    width: 100%;
 }

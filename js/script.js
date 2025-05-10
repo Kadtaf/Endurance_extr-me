@@ -3,43 +3,40 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.querySelector('.menu-toggle');
     const mainNav = document.querySelector('.main-nav');
     
-    // Gestion du clic sur le burger
     menuToggle.addEventListener('click', function() {
-        const isExpanded = this.getAttribute('aria-expanded') === 'true';
-        
-        // Basculer l'état
-        this.setAttribute('aria-expanded', !isExpanded);
         this.classList.toggle('active');
         mainNav.classList.toggle('active');
-        
-        // Bloquer/débloquer le défilement
-        document.body.style.overflow = isExpanded ? '' : 'hidden';
+        this.setAttribute('aria-expanded', this.classList.contains('active'));
     });
 
-    // Fermeture du menu au clic sur les liens
-    document.querySelectorAll('.main-nav a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Smooth scroll vers la section cible
-            const targetId = this.getAttribute('href');
-            if (targetId.startsWith('#')) {
+    // Génération du token CSRF
+    const csrfToken = document.getElementById('csrf_token');
+    if (csrfToken) {
+        fetch('php/generate-csrf.php')
+            .then(response => response.text())
+            .then(token => {
+                csrfToken.value = token;
+            });
+    }
+
+    // Validation du formulaire côté client
+    const newsletterForm = document.querySelector('.newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            const email = this.querySelector('input[name="email"]').value;
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                 e.preventDefault();
-                document.querySelector(targetId).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                alert('Veuillez entrer un email valide');
             }
-
-            // Fermer le menu
-            menuToggle.setAttribute('aria-expanded', 'false');
-            menuToggle.classList.remove('active');
-            mainNav.classList.remove('active');
-            document.body.style.overflow = '';
         });
-    });
-
-    // Validation Formulaire
-    document.getElementById('newsletterForm')?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Validation ici...
-        console.log('Formulaire soumis');
-    });
+    }
 });
+
+
+
+fetch('php/csrf.php')
+    .then(response => {
+        if (!response.ok) throw new Error('Network error');
+        return response.text();
+    })
+    .catch(error => console.error('CSRF fetch failed:', error));
