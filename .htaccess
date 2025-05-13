@@ -1,3 +1,11 @@
-RewriteEngine On 
-RewriteCond %{HTTPS} off 
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L, R=301]
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Autorise l'accès direct aux fichiers existants
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Redirige tout vers index.html si le fichier n'existe pas
+    RewriteRule ^ index.html [L]
+</IfModule>
