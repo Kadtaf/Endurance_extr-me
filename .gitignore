@@ -1,0 +1,6 @@
+# Fichier .env (variables sensibles)
+.env
+
+# Dossiers à ignorer (optionnel)
+/php/
+/logs/
