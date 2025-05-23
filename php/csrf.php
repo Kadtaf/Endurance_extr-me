@@ -1,4 +1,8 @@
 <?php
+header("Access-Control-Allow-Origin: http://endurance-extrem-vtt.local");
+header("Access-Control-Allow-Methods: GET, POST");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Credentials: true");
 session_start();
 header('Content-Type: text/plain');
 
@@ -8,3 +12,4 @@ if (empty($_SESSION['csrf_token']) || time() > ($_SESSION['csrf_token_exp'] ?? 0
 }
 
 echo $_SESSION['csrf_token'];
+
