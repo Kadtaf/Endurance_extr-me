@@ -1,73 +1,78 @@
 <?php
-ini_set('log_errors', 1);
-ini_set('error_log', __DIR__ . '/../../logs/php_errors.log');
-require_once __DIR__ . '/../config/database.php'; // Adaptez le chemin selon votre structure
+// 🔒 Sécurité : Aucun espace avant cette ligne !
+declare(strict_types=1);
+
+// 📁 Configuration des erreurs
+ini_set('display_errors', '0'); // Désactivé en prod
+error_reporting(E_ALL);
+ini_set('log_errors', '1');
+ini_set('error_log', __DIR__.'/../../logs/php_errors.log');
+
+// 🔄 Session et headers
 session_start();
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 header('X-Frame-Options: SAMEORIGIN');
-header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com");
+header("Content-Security-Policy: default-src 'self'");
 
-// Validation CSRF
-if (!isset($_POST['csrf_token'])) {
-    jsonResponse(false, 'Token CSRF manquant', 403);
+// 🗃️ Connexion DB
+require_once __DIR__.'/../config/database.php';
+
+// 🛡️ Validation CSRF (version simplifiée)
+if (empty($_POST['csrf_token']) || !hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'])) {
+    http_response_code(403);
+    exit(json_encode(['success' => false, 'message' => 'Token CSRF invalide']));
 }
 
-if ($_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '') || time() > ($_SESSION['csrf_token_exp'] ?? 0)) {
-    jsonResponse(false, 'Token CSRF expiré ou invalide', 403);
-}
-
-
-// Fonction de réponse
-function jsonResponse($success, $message, $httpCode = 200, $errorCode = null) {
-    http_response_code($httpCode);
-    $response = [
-        'success' => $success,
-        'message' => $message
-    ];
-    if ($errorCode !== null) {
-        $response['code'] = $errorCode;
-    }
-    echo json_encode($response);
-    exit;
-}
-
-
-// Validation CSRF
-if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '') || time() > ($_SESSION['csrf_token_exp'] ?? 0)) {
-    jsonResponse(false, 'Token CSRF expiré ou invalide', 403);
-}
-
-
-// Nettoyage
-$prenom = htmlspecialchars($_POST['prenom'] ?? '', ENT_QUOTES, 'UTF-8');
-$nom = htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8');
+// 🧹 Nettoyage des données
+$prenom = trim(htmlspecialchars($_POST['prenom'] ?? '', ENT_QUOTES, 'UTF-8'));
+$nom = trim(htmlspecialchars($_POST['nom'] ?? '', ENT_QUOTES, 'UTF-8'));
 $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
 
-// Validation
-if (empty($prenom) || strlen($prenom) > 50) jsonResponse(false, 'Prénom invalide', 400);
-if (empty($nom) || strlen($nom) > 50) jsonResponse(false, 'Nom invalide', 400);
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) jsonResponse(false, 'Email invalide', 400);
+// ✅ Validation
+$errors = [];
+if (empty($prenom)) $errors[] = 'Prénom requis';
+if (strlen($prenom) > 50) $errors[] = 'Prénom trop long';
+if (empty($nom)) $errors[] = 'Nom requis';
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Email invalide';
+
+if (!empty($errors)) {
+    http_response_code(400);
+    exit(json_encode(['success' => false, 'message' => implode(', ', $errors)]));
+}
 
 try {
+    // 🗃️ Requêtes DB
     $pdo = new PDO(
-        'mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8',
+        'mysql:host='.DB_HOST.';dbname='.DB_NAME.';charset=utf8mb4',
         DB_USER,
         DB_PASS,
-        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_EMULATE_PREPARES => false
+        ]
     );
 
-    // Vérification email existant
-    $stmt = $pdo->prepare("SELECT 1 FROM subscribers WHERE email = ?");
+    // 🔍 Vérification email existant
+    $stmt = $pdo->prepare("SELECT id FROM subscribers WHERE email = ? LIMIT 1");
     $stmt->execute([$email]);
-    if ($stmt->fetch()) jsonResponse(false, 'Email déjà inscrit', 409);
+    if ($stmt->fetch()) {
+        http_response_code(409);
+        exit(json_encode(['success' => false, 'message' => 'Email déjà inscrit']));
+    }
 
-    // Insertion
-    $stmt = $pdo->prepare("INSERT INTO subscribers (prenom, nom, email) VALUES (?, ?, ?)");
+    // ➕ Insertion
+    $stmt = $pdo->prepare("INSERT INTO subscribers (prenom, nom, email, created_at) VALUES (?, ?, ?, NOW())");
     $stmt->execute([$prenom, $nom, $email]);
-    
-    jsonResponse(true, 'Inscription réussie');
+
+    // 🎉 Succès
+    echo json_encode([
+        'success' => true,
+        'message' => 'INSCRIPTION REUSSIE'
+    ]);
+    exit;
 
 } catch (PDOException $e) {
-    error_log('DB Error: '.$e->getMessage());
-    jsonResponse(false, 'Erreur serveur', 500);
+    error_log('Database Error: '.$e->getMessage());
+    http_response_code(500);
+    exit(json_encode(['success' => false, 'message' => 'Erreur serveur']));
 }
