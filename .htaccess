@@ -1,11 +1,20 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
-    
-    # Autorise l'accès direct aux fichiers existants
+
+    # Autoriser l'accès direct aux fichiers et dossiers
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    
-    # Redirige tout vers index.html si le fichier n'existe pas
-    RewriteRule ^ index.html [L]
+
+    # Rediriger vers index.html (si SPA)
+    RewriteRule ^ index.html [QSA,L]
 </IfModule>
+
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "http://endurance-extrem-vtt.local"
+    Header always set Access-Control-Allow-Credentials "true"
+</IfModule>
+
+# Forcer l'encodage UTF-8
+AddDefaultCharset UTF-8
+
